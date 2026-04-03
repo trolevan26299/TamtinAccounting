@@ -40,15 +40,20 @@ jobs:
           password: ${{ secrets.SSH_PASSWORD }}
           port: 22
           script: |
-            echo "🔥 Bắt đầu kiểm tra và cập nhật ứng dụng..."
-            cd /root/tamtin-accounting  # Thay thế bằng đường dẫn thư mục chứa docker-compose.yml của dự án trên server
-            
-            # Tải images mới nhất từ Docker Hub
-            docker-compose pull
-            
-            # Khởi động lại các container nạp code mới
-            docker-compose up -d
-            
-            # Xóa rác image (dọn dẹp phiên bản cũ)
+            echo "🔥 Bắt đầu cập nhật ứng dụng TamTin Kế Toán..."
+            cd /root/tamtin-accounting
+
+            # Tải images mới từ Docker Hub (chỉ backend và frontend)
+            docker pull trolevan26299/tamtin-accounting-api:latest
+            docker pull trolevan26299/tamtin-accounting-web:latest
+
+            # Đảm bảo MongoDB đang chạy (không recreate để tránh lỗi)
+            docker compose up -d mongodb_accounting
+
+            # Recreate backend và frontend với image mới
+            docker rm -f tamtin_accounting_backend tamtin_accounting_frontend || true
+            docker compose up -d backend frontend
+
+            # Dọn dẹp image cũ
             docker image prune -f
-            echo "✅ Cài đặt hoàn tất. Hệ thống mới đã được khởi động!"
+            echo "✅ Cập nhật hoàn tất!"
