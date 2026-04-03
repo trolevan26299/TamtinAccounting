@@ -12,32 +12,18 @@ jobs:
       - name: Lấy mã nguồn
         uses: actions/checkout@v3
 
-      - name: Phân tích các thay đổi (Paths Filter)
-        id: filter
-        uses: dorny/paths-filter@v2
-        with:
-          filters: |
-            frontend:
-              - 'frontend/**'
-            backend:
-              - 'backend/**'
-
       - name: Đăng nhập Docker Hub
-        # Chạy nếu Backend HOẶC Frontend bị đổi
-        if: steps.filter.outputs.frontend == 'true' || steps.filter.outputs.backend == 'true'
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
       - name: Phát hành (Build & Push) Frontend
-        if: steps.filter.outputs.frontend == 'true'
         run: |
           docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/tamtin-accounting-web:latest ./frontend
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/tamtin-accounting-web:latest
 
       - name: Phát hành (Build & Push) Backend
-        if: steps.filter.outputs.backend == 'true'
         run: |
           docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/tamtin-accounting-api:latest ./backend
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/tamtin-accounting-api:latest
