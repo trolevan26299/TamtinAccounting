@@ -8,7 +8,12 @@ async function bootstrap() {
   app.setGlobalPrefix('api');
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
   app.enableCors({
-    origin: ['http://localhost:5173', 'http://localhost:3000'],
+    origin: [
+      'http://localhost:5173',
+      'http://localhost:3000',
+      'https://ketoan.tamtin.id.vn',
+      'http://ketoan.tamtin.id.vn',
+    ],
     credentials: true,
     exposedHeaders: ['Content-Disposition'],
   });
