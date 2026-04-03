@@ -22,7 +22,7 @@ services:
     restart: unless-stopped
     environment:
       - PORT=3001
-      - DB_URI=mongodb://${MONGO_USER:-admin}:${MONGO_PASS_ENCODED:-AdminPassword123}@mongodb_accounting:27017/${MONGO_DB:-tamtin_accounting}?authSource=admin
+      - MONGODB_URI=mongodb://${MONGO_USER:-admin}:${MONGO_PASS_ENCODED:-AdminPassword123}@tamtin_accounting_db:27017/${MONGO_DB:-tamtin_accounting}?authSource=admin
       - JWT_SECRET=${JWT_SECRET:-default_jwt_secret_change_me}
       - ADMIN_USERNAME=${ADMIN_USERNAME:-admin}
       - ADMIN_PASSWORD=${ADMIN_PASSWORD:-AdminPassword123}
