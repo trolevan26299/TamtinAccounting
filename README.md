@@ -57,10 +57,10 @@ git push -u origin main
 > Nhớ tạo một repository trắng (Private) trên Github trước mang tên gì đó tuỳ bạn rổi copy URL thay thế vào dòng `origin` nhé!
 
 ---
-## Tài khoản đăng nhập hệ thống (Mặc định khi build mới)
-- **Username:** `tamtin`
-- **Password:** `Tamtin@2026`
-*(Role mặc định: admin)*
+## Tài khoản đăng nhập hệ thống nội bộ (Mặc định khi build mới)
+- **Username:** `admin`
+- **Password:** `AdminPassword123`
+*(Role mặc định: admin - bạn nên đăng nhập và đổi mật khẩu hoặc tạo user mới)*
 
 ## API Endpoints (Backend :3001)
 
@@ -76,8 +76,8 @@ git push -u origin main
 ## Luồng sử dụng
 
 1. Truy cập `http://localhost:3000` (hoặc IP Server Port 3000)
-2. Đăng nhập hệ thống (`tamtin` / `Tamtin@2026`)
+2. Đăng nhập hệ thống (Sử dụng tài khoản admin khởi tạo)
 3. Vào **Tra cứu hóa đơn** trong sidebar
-4. Nhập MST + mật khẩu GDT + captcha → **Kết nối GDT**
+4. Nhập MST + Mật khẩu hệ thống Thuế (GDT) + captcha → **Kết nối GDT**
 5. Chọn loại HĐ, ngày → **Tìm kiếm** hoặc **Xuất Excel**
    - Nếu khoảng thời gian > 10 ngày, hệ thống Backend sẽ tự động chia nhỏ request để lấy trọn vẹn dữ liệu từ Thuế.

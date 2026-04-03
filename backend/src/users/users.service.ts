@@ -20,23 +20,26 @@ export class UsersService implements OnModuleInit {
   // ─── Seed admin ───
   private async seedDefaultUser() {
     try {
-      const admin = await this.userModel.findOne({ username: 'tamtin' });
+      const adminUser = process.env.ADMIN_USERNAME || 'admin';
+      const adminPass = process.env.ADMIN_PASSWORD || 'AdminPassword123';
+
+      const admin = await this.userModel.findOne({ username: adminUser });
       if (!admin) {
-        const hash = await bcrypt.hash('Tamtin@2026', 10);
+        const hash = await bcrypt.hash(adminPass, 10);
         await this.userModel.create({
-          username: 'tamtin',
+          username: adminUser,
           password: hash,
-          fullName: 'Quản trị viên TT Kế Toán',
+          fullName: 'Quản trị viên Hệ thống',
           role: 'admin',
         });
-        this.logger.log('✅ Tạo user mặc định: tamtin / Tamtin@2026');
+        this.logger.log(`✅ Tạo user mặc định: ${adminUser}`);
       } else {
         // Migrate plain text password to bcrypt if needed
         if (!admin.password.startsWith('$2a$') && !admin.password.startsWith('$2b$')) {
           admin.password = await bcrypt.hash(admin.password, 10);
           admin.role = 'admin'; // ensure role is admin
           await admin.save();
-          this.logger.log('✅ Đã mã hóa bcrypt cho tài khoản admin hiện tại');
+          this.logger.log(`✅ Đã mã hóa bcrypt cho tài khoản ${adminUser} hiện tại`);
         }
       }
     } catch (e) {

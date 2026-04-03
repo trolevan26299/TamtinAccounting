@@ -6,9 +6,9 @@ services:
     container_name: tamtin_mongodb
     restart: unless-stopped
     environment:
-      MONGO_INITDB_ROOT_USERNAME: admin
-      MONGO_INITDB_ROOT_PASSWORD: TamTin@2026
-      MONGO_INITDB_DATABASE: tamtin_db
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USER:-admin}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASS:-AdminPassword123}
+      MONGO_INITDB_DATABASE: ${MONGO_DB:-tamtin_db}
     ports:
       - "27018:27017" # Map từ 27018 (máy chủ) vào 27017 (container)
     volumes:
@@ -22,7 +22,7 @@ services:
     restart: unless-stopped
     environment:
       - PORT=3001
-      - DB_URI=mongodb://admin:TamTin%402026@mongodb:27017/tamtin_db?authSource=admin
+      - DB_URI=mongodb://${MONGO_USER:-admin}:${MONGO_PASS_ENCODED:-AdminPassword123}@mongodb:27017/${MONGO_DB:-tamtin_db}?authSource=admin
       # Lưu ý: Sửa lại hostname mongodb thành 'mongodb' thay vì 'localhost' để gọi trong mạng docker
     ports:
       - "3001:3001"
