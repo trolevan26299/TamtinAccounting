@@ -33,14 +33,14 @@ jobs:
       - name: Phát hành (Build & Push) Frontend
         if: steps.filter.outputs.frontend == 'true'
         run: |
-          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/tamtin-frontend:latest ./frontend
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/tamtin-frontend:latest
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/tamtin-accounting-web:latest ./frontend
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/tamtin-accounting-web:latest
 
       - name: Phát hành (Build & Push) Backend
         if: steps.filter.outputs.backend == 'true'
         run: |
-          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/tamtin-backend:latest ./backend
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/tamtin-backend:latest
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/tamtin-accounting-api:latest ./backend
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/tamtin-accounting-api:latest
 
   deploy:
     needs: build_and_push

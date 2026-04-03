@@ -1,52 +1,52 @@
 version: '3.8'
 
 services:
-  mongodb:
+  mongodb_accounting:
     image: mongo:7.0
-    container_name: tamtin_mongodb
+    container_name: tamtin_accounting_db
     restart: unless-stopped
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_USER:-admin}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASS:-AdminPassword123}
-      MONGO_INITDB_DATABASE: ${MONGO_DB:-tamtin_db}
+      MONGO_INITDB_DATABASE: ${MONGO_DB:-tamtin_accounting}
     ports:
       - "27018:27017" # Map từ 27018 (máy chủ) vào 27017 (container)
     volumes:
-      - mongodb_data:/data/db
+      - mongodb_accounting_data:/data/db
     networks:
-      - tamtin_network
+      - tamtin_accounting_network
 
   backend:
-    image: ${DOCKERHUB_USERNAME:-trolevan26299}/tamtin-backend:latest
-    container_name: tamtin-api
+    image: ${DOCKERHUB_USERNAME:-trolevan26299}/tamtin-accounting-api:latest
+    container_name: tamtin_accounting_backend
     restart: unless-stopped
     environment:
       - PORT=3001
-      - DB_URI=mongodb://${MONGO_USER:-admin}:${MONGO_PASS_ENCODED:-AdminPassword123}@mongodb:27017/${MONGO_DB:-tamtin_db}?authSource=admin
+      - DB_URI=mongodb://${MONGO_USER:-admin}:${MONGO_PASS_ENCODED:-AdminPassword123}@mongodb_accounting:27017/${MONGO_DB:-tamtin_accounting}?authSource=admin
       # Lưu ý: Sửa lại hostname mongodb thành 'mongodb' thay vì 'localhost' để gọi trong mạng docker
     ports:
       - "3001:3001"
     depends_on:
-      - mongodb
+      - mongodb_accounting
     networks:
-      - tamtin_network
+      - tamtin_accounting_network
 
   frontend:
-    image: ${DOCKERHUB_USERNAME:-trolevan26299}/tamtin-frontend:latest
-    container_name: tamtin-web
+    image: ${DOCKERHUB_USERNAME:-trolevan26299}/tamtin-accounting-web:latest
+    container_name: tamtin_accounting_frontend
     restart: unless-stopped
     ports:
       - "3000:80" # Chạy public ở cổng 3000 (map vào 80 nginx) hoặc có thể mở "80:80"
     depends_on:
       - backend
     networks:
-      - tamtin_network
+      - tamtin_accounting_network
 
 volumes:
-  mongodb_data:
-    name: tamtin_mongodb_data
+  mongodb_accounting_data:
+    name: tamtin_accounting_mongodb_data
 
 networks:
-  tamtin_network:
-    name: tamtin_network
+  tamtin_accounting_network:
+    name: tamtin_accounting_network
     driver: bridge
