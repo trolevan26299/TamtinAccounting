@@ -18,7 +18,7 @@ Hệ thống CI/CD đã được cấu trúc lại cho chuyên nghiệp, bắt c
 Trên kho lưu trữ tài khoản Github chứa code này, bạn thao tác: **Settings -> Secrets and variables -> Actions -> Cài đặt những khóa (New repository secret)** sau đây:
 
 - `DOCKERHUB_USERNAME`: Tên tài khoản Docker Hub của bạn (VD: `trolevan26299`).
-- `DOCKERHUB_TOKEN`: Đoạn mã Access Token sinh ra trong web Docker Hub.
+- `DOCKERHUB_PASSWORD`: Nhập thẳng mật khẩu tài khoản Docker Hub của bạn.
 - `SSH_HOST`: IP máy chủ Ubuntu VPS của bạn (`116.118...`).
 - `SSH_PORT`: `22`.
 - `SSH_USERNAME`: `root` (theo CLI của bạn, hoặc user được cấu hình riêng).
