@@ -10,7 +10,7 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASS:-AdminPassword123}
       MONGO_INITDB_DATABASE: ${MONGO_DB:-tamtin_accounting}
     ports:
-      - "27018:27017" # Map từ 27018 (máy chủ) vào 27017 (container)
+      - "27019:27017" # Tránh đụng độ với port 27018 cũ của hệ thống
     volumes:
       - mongodb_accounting_data:/data/db
     networks:
