@@ -26,6 +26,7 @@ services:
       - JWT_SECRET=${JWT_SECRET:-default_jwt_secret_change_me}
       - ADMIN_USERNAME=${ADMIN_USERNAME:-admin}
       - ADMIN_PASSWORD=${ADMIN_PASSWORD:-AdminPassword123}
+      - GDT_BASE_URL=${GDT_BASE_URL:-https://hoadondientu.gdt.gov.vn:30000}
     ports:
       - "3001:3001"
     depends_on:
