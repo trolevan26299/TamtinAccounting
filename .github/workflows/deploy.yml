@@ -55,7 +55,7 @@ jobs:
           port: 22
           script: |
             echo "🔥 Bắt đầu kiểm tra và cập nhật ứng dụng..."
-            cd /root/tamtin  # Thay thế bằng đường dẫn thư mục chứa docker-compose.yml của dự án trên server
+            cd /root/tamtin-accounting  # Thay thế bằng đường dẫn thư mục chứa docker-compose.yml của dự án trên server
             
             # Tải images mới nhất từ Docker Hub
             docker-compose pull

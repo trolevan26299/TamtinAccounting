@@ -30,7 +30,7 @@ Bình thường bạn chỉ việc Dev dưới Local -> `git push origin main`.
 Hệ thống mạng Github Action sẽ nhúng tay can thiệp:
 1. **Dorny Paths-Filter:** Nếu bạn chỉ code gõ ở thư mục `frontend/`, nó chỉ ra lệnh cỗ máy ảo Github Build Frontend. Ngược lại với mảng Backend. (Giảm tải băng thông và sức mạnh server vô ích).
 2. **Docker Build & Push:** Máy trạm ảo của GitHub sẽ đọc các file `Dockerfile` đã chuẩn bị sẵn để nén code thành bộ cục Image rồi tống sạch lên Docker Hub cá nhân của bạn dưới dạng tên public ví dụ `trolevan26299/tamtin-frontend:latest`
-3. **Appleboy SSH Action:** Action lúc này gọi API tự kích hoạt SSH gõ lệnh đăng nhập thẳng màn hình CLI Ubuntu Server của bạn, chuyển hướng cd vào thư mục setup dự án (Bạn cần chỉnh tay đoạn `cd /root/...` trong file deploy.yml cho đúng thư mục dự án) rồi tự gõ lệnh:
+3. **Appleboy SSH Action:** Action lúc này gọi API tự kích hoạt SSH gõ lệnh đăng nhập thẳng màn hình CLI Ubuntu Server của bạn, chuyển hướng cd vào thư mục setup dự án (Bạn cần chỉnh tay đoạn `cd /root/tamtin-accounting` trong file deploy.yml cho đúng thư mục dự án) rồi tự gõ lệnh:
   ```bash
   docker-compose pull
   docker-compose up -d
