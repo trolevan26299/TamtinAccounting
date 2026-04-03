@@ -1,0 +1,68 @@
+name: CI/CD Pipeline to Server
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build_and_push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Lấy mã nguồn
+        uses: actions/checkout@v3
+
+      - name: Phân tích các thay đổi (Paths Filter)
+        id: filter
+        uses: dorny/paths-filter@v2
+        with:
+          filters: |
+            frontend:
+              - 'frontend/**'
+            backend:
+              - 'backend/**'
+
+      - name: Đăng nhập Docker Hub
+        # Chạy nếu Backend HOẶC Frontend bị đổi
+        if: steps.filter.outputs.frontend == 'true' || steps.filter.outputs.backend == 'true'
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Phát hành (Build & Push) Frontend
+        if: steps.filter.outputs.frontend == 'true'
+        run: |
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/tamtin-frontend:latest ./frontend
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/tamtin-frontend:latest
+
+      - name: Phát hành (Build & Push) Backend
+        if: steps.filter.outputs.backend == 'true'
+        run: |
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/tamtin-backend:latest ./backend
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/tamtin-backend:latest
+
+  deploy:
+    needs: build_and_push
+    runs-on: ubuntu-latest
+    steps:
+      - name: Truy cập Server để tiến hành tải ảnh mới (Pull)
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          port: 22
+          script: |
+            echo "🔥 Bắt đầu kiểm tra và cập nhật ứng dụng..."
+            cd /root/tamtin  # Thay thế bằng đường dẫn thư mục chứa docker-compose.yml của dự án trên server
+            
+            # Tải images mới nhất từ Docker Hub
+            docker-compose pull
+            
+            # Khởi động lại các container nạp code mới
+            docker-compose up -d
+            
+            # Xóa rác image (dọn dẹp phiên bản cũ)
+            docker image prune -f
+            echo "✅ Cài đặt hoàn tất. Hệ thống mới đã được khởi động!"
